@@ -14,7 +14,7 @@ import {
   ApiConsumes,
   ApiMethodNotAllowedResponse, ApiNoContentResponse, ApiOAuth2,
   ApiOkResponse,
-  ApiTags,
+  ApiTags, ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import {OAuth2HttpRequest} from "presentation/views/requests/oauth2";
@@ -23,15 +23,18 @@ import {ScopeEnum} from "domain/enums/oauth2";
 import {UserRequest} from "presentation/middlewares";
 import {Auth} from "presentation/guards";
 import {RevokeTokenRequestDto} from "domain/dto/requests/oauth2";
+import {Throttle} from "@nestjs/throttler";
 
 @Controller('oauth/2.0')
 @ApiTags('OAuth')
 @ApiConsumes('application/json')
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiMethodNotAllowedResponse({ description: 'Method not allowed' })
+@ApiTooManyRequestsResponse({ description: 'Too Many Requests' })
 export class OAuth2Controller {
   constructor(private readonly oauth2UseCasesFactory: OAuth2UseCasesFactory) {}
 
+  @Throttle({ default: { limit: 10, ttl: 5000 } })
   @Post('token')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: OAuth2HttpResponse })

@@ -1,9 +1,10 @@
 import { IOAuth2GrantStrategy } from 'application/modules/oauth2/services/oauth2-grant.strategy';
-import { BadRequestException, Injectable, Type } from '@nestjs/common';
+import { Injectable, Type } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { OAUTH2_STRATEGY_METADATA } from 'application/modules/oauth2/strategies/strategy.explorer';
 import { OAuth2HttpRequestDto } from 'domain/dto/requests/oauth2/oauth2-http-request.dto';
 import { OAuth2HttpResponseDto } from 'domain/dto/responses/oauth2';
+import {OAuth2BadRequestError} from "application/modules/oauth2/errors";
 
 export type OAuth2GrantStrategyType = Type<IOAuth2GrantStrategy>;
 
@@ -32,9 +33,7 @@ export class OAuth2GrantStrategyRegistry {
     request: OAuth2HttpRequestDto,
   ): Promise<OAuth2HttpResponseDto> {
     if (!(request.grantType in this.registry)) {
-      throw new BadRequestException(
-        `Cannot find the a strategy for the grant type "${request.grantType}"`,
-      );
+      throw new OAuth2BadRequestError(`Cannot find the a strategy for the grant type "${request.grantType}"`);
     }
 
     return await this.registry[request.grantType].respondToAccessTokenRequest(

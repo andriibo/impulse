@@ -1,4 +1,4 @@
-import {BadRequestException, Inject} from '@nestjs/common';
+import {Inject} from '@nestjs/common';
 import { OAuth2GrantStrategy } from 'infrastructure/modules/oauth2/decorators';
 import { IClientRepository, IScopeRepository } from 'domain/repositories';
 import { OAuth2HttpRequestDto } from 'domain/dto/requests/oauth2/oauth2-http-request.dto';
@@ -8,6 +8,7 @@ import { UserEntity } from 'domain/entities';
 import { IUserRepository } from 'domain/repositories/user.repository';
 import { IOAuth2HttpResponseService } from 'application/modules/oauth2/services/oauth2-http-response.service';
 import {UserSpecification} from "application/modules/user/specifications";
+import {OAuth2BadRequestError} from "application/modules/oauth2/errors";
 
 @OAuth2GrantStrategy('password')
 export class PasswordStrategy extends AbstractStrategy {
@@ -30,13 +31,12 @@ export class PasswordStrategy extends AbstractStrategy {
   ): Promise<UserEntity> {
     const user = await this.userRepository.findByEmail(request.username);
     if (!user) {
-      throw new BadRequestException(`Username or password is incorrect.`);
+      throw new OAuth2BadRequestError(`Username or password is incorrect.`);
     }
 
     await this.userSpecification.assertPasswordsAreSame(
         request.password,
         user.password,
-        'Username or password is incorrect.',
     );
 
     return user;

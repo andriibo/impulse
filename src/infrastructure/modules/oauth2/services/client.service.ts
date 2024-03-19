@@ -1,5 +1,5 @@
 import { ClientEntity } from 'domain/entities';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ClientModel } from 'infrastructure/modules/oauth2/models';
 import { IClientRepository } from 'domain/repositories';
 import { IClientService } from 'application/modules/oauth2/services/client.service';
@@ -7,6 +7,7 @@ import * as crypto from 'crypto';
 import * as selfsigned from 'selfsigned';
 import { ConfigService } from '@nestjs/config';
 import { GrantTypeEnum, ScopeEnum } from 'domain/enums/oauth2';
+import {OAuth2ForbiddenError} from "application/modules/oauth2/errors";
 
 @Injectable()
 export class ClientService implements IClientService {
@@ -26,7 +27,7 @@ export class ClientService implements IClientService {
     client.secret = crypto.randomBytes(32).toString('hex');
     client.scopes = scopes.filter((scope) => {
       if (!Object.values(ScopeEnum).includes(scope as ScopeEnum)) {
-        throw new BadRequestException(`Not allowed scope ${scope}.`);
+        throw new OAuth2ForbiddenError(`Not allowed scope ${scope}.`);
       }
       return scope;
     });
@@ -37,7 +38,7 @@ export class ClientService implements IClientService {
         return grant;
       }
 
-      throw new BadRequestException(`Not allowed grant ${grant}.`);
+      throw new OAuth2ForbiddenError(`Not allowed grant ${grant}.`);
     });
     client.grants = filteredGrants || Object.values(GrantTypeEnum);
 

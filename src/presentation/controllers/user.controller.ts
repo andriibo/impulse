@@ -10,7 +10,7 @@ import {
   ApiConsumes, ApiCreatedResponse,
   ApiMethodNotAllowedResponse, ApiNotFoundResponse,
   ApiOAuth2, ApiOkResponse,
-  ApiTags,
+  ApiTags, ApiTooManyRequestsResponse,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TrimPipe } from 'presentation/pipes';
@@ -28,6 +28,7 @@ import {UserResponse} from "presentation/views/responses/user";
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @ApiBadRequestResponse({ description: 'Bad request' })
 @ApiMethodNotAllowedResponse({ description: 'Method not allowed' })
+@ApiTooManyRequestsResponse({ description: 'Too Many Requests' })
 export class UserController {
   constructor(private readonly userUseCasesFactory: UserUseCasesFactory) {}
 
@@ -52,7 +53,7 @@ export class UserController {
   @ApiOkResponse({ type: UserResponse })
   @ApiNotFoundResponse({ description: 'Not found' })
   @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
-  async getMyProfile(@Req() request: UserRequest): Promise<UserResponseDto> {
+  async getUserInfo(@Req() request: UserRequest): Promise<UserResponseDto> {
     const useCase = this.userUseCasesFactory.createGetUserInfoUseCase();
 
     return await useCase.get(request.user.accessTokenClaims.getUserId());

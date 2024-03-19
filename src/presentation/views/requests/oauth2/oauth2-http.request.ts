@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsIn,
-  IsNotEmpty,
+  IsNotEmpty, IsUUID,
   Length,
   MaxLength,
   ValidateIf,
@@ -25,6 +25,7 @@ export class OAuth2HttpRequest extends OAuth2HttpRequestDto {
     maxLength: 500,
   })
   @IsNotEmpty()
+  @IsUUID()
   @MaxLength(500)
   clientId: string;
 

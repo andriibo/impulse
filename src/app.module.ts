@@ -9,9 +9,19 @@ import {ConsoleModule} from "infrastructure/modules/console/console.module";
 import {AssignUserMiddleware} from "presentation/middlewares";
 import {RequestUserService} from "infrastructure/services";
 import {UserModule} from "infrastructure/modules/user/user.module";
+import {APP_GUARD, APP_INTERCEPTOR} from "@nestjs/core";
+import {ThrottlerBehindProxyGuard} from "presentation/guards";
+import {ThrottlerModule} from "@nestjs/throttler";
+import {ErrorsInterceptor} from "presentation/interceptors";
 
 @Module({
     imports: [
+        ThrottlerModule.forRoot([
+            {
+                ttl: 1000,
+                limit: 10,
+            },
+        ]),
         TypeOrmModule.forRoot({...dbConnectionOptions, autoLoadEntities: true}),
         CqrsModule.forRoot(),
         RequestContextModule,
@@ -22,6 +32,14 @@ import {UserModule} from "infrastructure/modules/user/user.module";
     ],
     providers: [
         RequestUserService,
+        {
+            provide: APP_GUARD,
+            useClass: ThrottlerBehindProxyGuard,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ErrorsInterceptor,
+        },
     ],
 })
 export class AppModule implements NestModule {
