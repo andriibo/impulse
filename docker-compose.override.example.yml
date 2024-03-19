@@ -10,5 +10,8 @@ services:
       - 3001:5432
   pg-admin:
     container_name: db.pg-admin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
     ports:
       - 3002:80

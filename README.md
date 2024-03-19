@@ -38,3 +38,26 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+
+## Migration
+
+```bash
+# commands listed below are specified in the package.json
+# create migration
+$ npm run migration:create --name=Migration
+
+# generate migration
+$ npm run migration:generate --name=Migration
+
+# run migrations
+$ npm run migration:up
+
+# revert migration
+$ npm run migration:down
+```
+
+## Create new OAuth2 Client
+```bash
+$ npm run console:dev create-client -- -s application user
+$ npm run console create-client -s application user
+```

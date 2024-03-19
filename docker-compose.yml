@@ -7,17 +7,14 @@ services:
       target: development
     restart: unless-stopped
     tty: true
-    environment:
-      NODE_ENV: ${NODE_ENV}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
-      DB_NAME: ${DB_NAME}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:debug
+    ports:
+      - ${SERVER_PORT}:3000
     networks:
       - impulse-network
     depends_on:
@@ -38,9 +35,8 @@ services:
   pg-admin:
     image: dpage/pgadmin4
     restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    logging:
+      driver: none
     volumes:
       - pgadmin-data:/var/lib/pgadmin
     depends_on:
