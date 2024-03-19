@@ -12,6 +12,8 @@ import {IUserService} from "application/modules/user/services";
 import {UserService} from "infrastructure/modules/user/services";
 import {UserController} from "presentation/controllers";
 import {UserUseCasesFactory} from "infrastructure/modules/user/factories";
+import {UserSpecification} from "application/modules/user/specifications";
+import {GeUserInfoHandler} from "application/modules/user/handlers/get-user-info.handler";
 
 @Module({
     imports: [
@@ -19,7 +21,7 @@ import {UserUseCasesFactory} from "infrastructure/modules/user/factories";
         ConfigModule,
     ],
     exports: [
-        IUserRepository,
+        IUserRepository, UserSpecification,
     ],
     controllers: [UserController],
     providers: [
@@ -32,8 +34,10 @@ import {UserUseCasesFactory} from "infrastructure/modules/user/factories";
             provide: IUserService,
             useClass: UserService,
         },
+        UserSpecification,
         SignUpHandler,
         UserCreatedHandler,
+        GeUserInfoHandler,
     ],
 })
 export class UserModule {

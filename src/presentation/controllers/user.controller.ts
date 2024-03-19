@@ -1,26 +1,30 @@
 import {
-  Body,
-  Controller,
+  Body, ClassSerializerInterceptor,
+  Controller, Get,
   HttpCode,
   HttpStatus,
-  Post,
+  Post, Req, UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiConsumes, ApiCreatedResponse,
-  ApiMethodNotAllowedResponse,
-  ApiOAuth2,
+  ApiMethodNotAllowedResponse, ApiNotFoundResponse,
+  ApiOAuth2, ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { TrimPipe } from 'presentation/pipes';
-import {AuthApplication} from 'presentation/guards';
+import {AuthApplication, AuthUser} from 'presentation/guards';
 import { ScopeEnum } from 'domain/enums/oauth2';
 import {UserUseCasesFactory} from "infrastructure/modules/user/factories";
 import {SignUpRequest} from "presentation/views/requests/user";
+import {UserRequest} from "presentation/middlewares";
+import {UserResponseDto} from "domain/dto/responses/user/user-response.dto";
+import {UserResponse} from "presentation/views/responses/user";
 
 @Controller('user')
 @ApiTags('User')
+@UseInterceptors(ClassSerializerInterceptor)
 @ApiUnauthorizedResponse({ description: 'Unauthorized' })
 @ApiBadRequestResponse({ description: 'Bad request' })
 @ApiMethodNotAllowedResponse({ description: 'Method not allowed' })
@@ -39,5 +43,18 @@ export class UserController {
     const useCase = this.userUseCasesFactory.createSignUpUseCase();
 
     await useCase.signUp(request);
+  }
+
+  @AuthUser()
+  @ApiOAuth2([ScopeEnum.User])
+  @Get('information')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: UserResponse })
+  @ApiNotFoundResponse({ description: 'Not found' })
+  @ApiConsumes('application/json', 'application/x-www-form-urlencoded')
+  async getMyProfile(@Req() request: UserRequest): Promise<UserResponseDto> {
+    const useCase = this.userUseCasesFactory.createGetUserInfoUseCase();
+
+    return await useCase.get(request.user.accessTokenClaims.getUserId());
   }
 }

@@ -1,4 +1,4 @@
-import { Inject } from '@nestjs/common';
+import {BadRequestException, Inject} from '@nestjs/common';
 import { OAuth2GrantStrategy } from 'infrastructure/modules/oauth2/decorators';
 import { IClientRepository, IScopeRepository } from 'domain/repositories';
 import { OAuth2HttpRequestDto } from 'domain/dto/requests/oauth2/oauth2-http-request.dto';
@@ -7,8 +7,7 @@ import { OAuth2HttpResponseDto } from 'src/domain/dto/responses/oauth2';
 import { UserEntity } from 'domain/entities';
 import { IUserRepository } from 'domain/repositories/user.repository';
 import { IOAuth2HttpResponseService } from 'application/modules/oauth2/services/oauth2-http-response.service';
-import {UserModel} from "infrastructure/modules/user/models/user.model";
-import {ScopeEnum} from "domain/enums/oauth2";
+import {UserSpecification} from "application/modules/user/specifications";
 
 @OAuth2GrantStrategy('password')
 export class PasswordStrategy extends AbstractStrategy {
@@ -21,6 +20,7 @@ export class PasswordStrategy extends AbstractStrategy {
     protected readonly clientRepository: IClientRepository,
     @Inject(IUserRepository)
     protected readonly userRepository: IUserRepository,
+    protected readonly userSpecification: UserSpecification,
   ) {
     super(oauth2HttpResponseService, scopeRepository, clientRepository);
   }
@@ -28,11 +28,18 @@ export class PasswordStrategy extends AbstractStrategy {
   private async validateUser(
     request: OAuth2HttpRequestDto,
   ): Promise<UserEntity> {
-    return new UserModel();
-    // return await this.userRepository.findByCredentials(
-    //   request.username,
-    //   request.password,
-    // );
+    const user = await this.userRepository.findByEmail(request.username);
+    if (!user) {
+      throw new BadRequestException(`Username or password is incorrect.`);
+    }
+
+    await this.userSpecification.assertPasswordsAreSame(
+        request.password,
+        user.password,
+        'Username or password is incorrect.',
+    );
+
+    return user;
   }
 
   async respondToAccessTokenRequest(

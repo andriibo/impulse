@@ -72,8 +72,10 @@ $ npm run console create-client -s application user
 
 ```bash
 {SCHEME}://{HOST}:{PORT}/browser
-1. login credentials: PGADMIN_DEFAULT_EMAIL and PGADMIN_DEFAULT_PASSWORD
-2. create server
+1. Login credentials
+  Email: PGADMIN_DEFAULT_EMAIL
+  Password: PGADMIN_DEFAULT_PASSWORD
+2. Create server
   Host: db.postgres
   Port: 5432
   Username: DB_USERNAME

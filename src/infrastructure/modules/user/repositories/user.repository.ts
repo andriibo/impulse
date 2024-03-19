@@ -12,6 +12,10 @@ export class UserRepository implements IUserRepository {
       private readonly repository: Repository<UserModel>,
   ) {}
 
+  async findById(id: string): Promise<UserEntity> {
+    return await this.repository.findOneBy({ id });
+  }
+
   async findByEmail(email: string): Promise<UserEntity> {
     return await this.repository.findOneBy({ email });
   }
