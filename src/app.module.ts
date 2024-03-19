@@ -8,6 +8,7 @@ import {OAuth2Module} from "infrastructure/modules/oauth2/oauth2.module";
 import {ConsoleModule} from "infrastructure/modules/console/console.module";
 import {AssignUserMiddleware} from "presentation/middlewares";
 import {RequestUserService} from "infrastructure/services";
+import {UserModule} from "infrastructure/modules/user/user.module";
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import {RequestUserService} from "infrastructure/services";
         CoreModule,
         OAuth2Module,
         ConsoleModule,
+        UserModule,
     ],
     providers: [
         RequestUserService,

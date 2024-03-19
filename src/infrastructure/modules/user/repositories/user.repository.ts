@@ -15,4 +15,8 @@ export class UserRepository implements IUserRepository {
   async findByEmail(email: string): Promise<UserEntity> {
     return await this.repository.findOneBy({ email });
   }
+
+  async save(entity: UserModel): Promise<UserEntity> {
+    return await this.repository.save(entity);
+  }
 }

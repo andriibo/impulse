@@ -29,4 +29,4 @@ export class AuthUserGuard implements CanActivate {
   }
 }
 
-export const AuthPlayer = () => UseGuards(AuthUserGuard);
+export const AuthUser = () => UseGuards(AuthUserGuard);
