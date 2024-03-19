@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
-  GetAccessTokenUseCase, RegisterClientUseCase, RevokeTokenUseCase
+  GetAccessTokenUseCase, RegisterClientUseCase, RemoveExpiredTokensUseCase, RevokeTokenUseCase
 } from 'application/modules/oauth2/use-cases';
 import {CommandBus, QueryBus} from '@nestjs/cqrs';
 
@@ -21,5 +21,9 @@ export class OAuth2UseCasesFactory {
 
   createRegisterClientUseCase(): RegisterClientUseCase {
     return new RegisterClientUseCase(this.commandBus);
+  }
+
+  createRemoveExpiredTokensUseCase(): RemoveExpiredTokensUseCase {
+    return new RemoveExpiredTokensUseCase(this.commandBus);
   }
 }

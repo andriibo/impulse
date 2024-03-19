@@ -31,7 +31,7 @@ import {
     ScopeRepository,
 } from 'infrastructure/modules/oauth2/repositories';
 import {
-    GetAccessTokenHandler, RegisterClientHandler, RevokeAccessTokenHandler,
+    GetAccessTokenHandler, RegisterClientHandler, RemoveExpiredTokensHandler, RevokeAccessTokenHandler,
 } from 'src/application/modules/oauth2/handlers';
 import {
     IJwtTokenService,
@@ -51,6 +51,7 @@ import {
 } from 'application/modules/oauth2/strategies';
 import {ConfigModule} from '@nestjs/config';
 import {UserModule} from "infrastructure/modules/user/user.module";
+import {RemoveExpiredTokensJob} from "infrastructure/modules/oauth2/jobs";
 
 @Module({
     imports: [
@@ -62,7 +63,7 @@ import {UserModule} from "infrastructure/modules/user/user.module";
         UserModule,
         ConfigModule,
     ],
-    exports: [OAuth2UseCasesFactory],
+    exports: [OAuth2UseCasesFactory, IJwtTokenService, IClientRepository, IAccessTokenService],
     controllers: [OAuth2Controller],
     providers: [
         OAuth2UseCasesFactory,
@@ -112,6 +113,8 @@ import {UserModule} from "infrastructure/modules/user/user.module";
         GetAccessTokenHandler,
         RevokeAccessTokenHandler,
         RegisterClientHandler,
+        RemoveExpiredTokensHandler,
+        RemoveExpiredTokensJob,
     ],
 })
 export class OAuth2Module implements OnModuleInit {

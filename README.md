@@ -3,7 +3,6 @@
 ```
 cp -n .env.example .env
 cp -n docker-compose.override.example.yml docker-compose.override.yml
-yarn install
 ```
 
 ## Docker
@@ -60,4 +59,23 @@ $ npm run migration:down
 ```bash
 $ npm run console:dev create-client -- -s application user
 $ npm run console create-client -s application user
+```
+
+## API Documentation
+
+```bash
+{SCHEME}://{HOST}:{PORT}/api
+{SCHEME}://{HOST}:{PORT}/api-json
+```
+
+## pgAdmin
+
+```bash
+{SCHEME}://{HOST}:{PORT}/browser
+1. login credentials: PGADMIN_DEFAULT_EMAIL and PGADMIN_DEFAULT_PASSWORD
+2. create server
+  Host: db.postgres
+  Port: 5432
+  Username: DB_USERNAME
+  Password: DB_PASSWORD
 ```
