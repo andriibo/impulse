@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  impulse-api:
+    build:
+      context: .
+      target: development
+    restart: unless-stopped
+    tty: true
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_NAME: ${DB_NAME}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:debug
+    networks:
+      - impulse-network
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres:16.2
+    restart: unless-stopped
+    tty: true
+    networks:
+      - impulse-network
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  pg-admin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
+    networks:
+      - impulse-network
+
+networks:
+  impulse-network:
+    name: impulse-network
+volumes:
+  pgdata:
+  pgadmin-data:

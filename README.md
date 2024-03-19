@@ -1,1 +1,40 @@
-# impulse
+## Getting Started
+
+```
+cp -n .env.example .env
+cp -n docker-compose.override.example.yml docker-compose.override.yml
+yarn install
+```
+
+## Docker
+
+```bash
+# run a stack of services
+$ docker-compose up --build -dV
+```
+
+## Running the app
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+# Test
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```

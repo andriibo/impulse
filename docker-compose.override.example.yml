@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  impulse-api:
+    container_name: impulse.api
+    ports:
+      - 3000:3000
+  postgres:
+    container_name: db.postgres
+    ports:
+      - 3001:5432
+  pg-admin:
+    container_name: db.pg-admin
+    ports:
+      - 3002:80
