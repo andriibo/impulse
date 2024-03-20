@@ -1,31 +1,23 @@
 import {
-  CanActivate,
   ExecutionContext,
   ForbiddenException,
   Injectable,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
-import { isNullOrUndefined } from 'infrastructure/support/type.helper';
 import { UserRequest } from 'presentation/middlewares';
+import {AuthGuard} from "presentation/guards/auth.guard";
 
 @Injectable()
-export class AuthUserGuard implements CanActivate {
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+export class AuthUserGuard extends AuthGuard {
+  canActivate(context: ExecutionContext): boolean {
+    const parentCanActivate = super.canActivate(context);
     const request: UserRequest = context.switchToHttp().getRequest();
-
-    if (
-      isNullOrUndefined(request.user) ||
-      isNullOrUndefined(request.user.accessTokenClaims)
-    ) {
-      throw new UnauthorizedException();
-    }
 
     if (!request.user.accessTokenClaims.getUserId()) {
       throw new ForbiddenException(`Bearer token of incorrect grantType.`);
     }
 
-    return true;
+    return parentCanActivate;
   }
 }
 

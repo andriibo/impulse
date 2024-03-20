@@ -9,14 +9,14 @@ import { isNullOrUndefined } from 'infrastructure/support/type.helper';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
 
     if (
       isNullOrUndefined(request.user) ||
       isNullOrUndefined(request.user.accessTokenClaims)
     ) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Unauthorized.');
     }
 
     return true;

@@ -8,6 +8,6 @@ export class UserCreatedHandler implements IEventHandler<UserCreatedEvent> {
   async handle(event: UserCreatedEvent): Promise<void> {
     const { email } = event;
 
-    console.log(`User ${email} has been registered.`);
+    //console.log(`User ${email} has been registered.`);
   }
 }
