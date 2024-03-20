@@ -7,7 +7,7 @@ import {RefreshTokenEntity, UserEntity} from "domain/entities";
 import {getRepositoryToken} from "@nestjs/typeorm";
 import {AccessTokenModel, ClientModel, RefreshTokenModel} from "infrastructure/modules/oauth2/models";
 import {UserModule} from "infrastructure/modules/user/user.module";
-import {mockedAccessToken, mockedAppJwtPayload, mockedClient, TestModule} from "test/test.module";
+import {mockedAccessToken, mockedAppJwtPayload, mockedClient, TestModule} from "tests/test.module";
 import {UserModel} from "infrastructure/modules/user/models";
 import {IJwtTokenService} from "application/modules/oauth2/services";
 
