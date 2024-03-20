@@ -11,7 +11,7 @@ import {
   ApiMethodNotAllowedResponse, ApiNotFoundResponse,
   ApiOAuth2, ApiOkResponse,
   ApiTags, ApiTooManyRequestsResponse,
-  ApiUnauthorizedResponse,
+  ApiUnauthorizedResponse, ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import { TrimPipe } from 'presentation/pipes';
 import {AuthApplication, AuthUser} from 'presentation/guards';
@@ -29,6 +29,7 @@ import {UserResponse} from "presentation/views/responses/user";
 @ApiBadRequestResponse({ description: 'Bad request' })
 @ApiMethodNotAllowedResponse({ description: 'Method not allowed' })
 @ApiTooManyRequestsResponse({ description: 'Too Many Requests' })
+@ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
 export class UserController {
   constructor(private readonly userUseCasesFactory: UserUseCasesFactory) {}
 

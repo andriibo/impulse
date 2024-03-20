@@ -15,7 +15,7 @@ import {
   ApiMethodNotAllowedResponse, ApiNoContentResponse, ApiOAuth2,
   ApiOkResponse,
   ApiTags, ApiTooManyRequestsResponse,
-  ApiUnauthorizedResponse,
+  ApiUnauthorizedResponse, ApiUnprocessableEntityResponse,
 } from '@nestjs/swagger';
 import {OAuth2HttpRequest} from "presentation/views/requests/oauth2";
 import {OAuth2HttpResponseDto} from "domain/dto/responses/oauth2";
@@ -31,6 +31,7 @@ import {Throttle} from "@nestjs/throttler";
 @UseInterceptors(ClassSerializerInterceptor)
 @ApiMethodNotAllowedResponse({ description: 'Method not allowed' })
 @ApiTooManyRequestsResponse({ description: 'Too Many Requests' })
+@ApiUnprocessableEntityResponse({ description: 'Unprocessable Entity' })
 export class OAuth2Controller {
   constructor(private readonly oauth2UseCasesFactory: OAuth2UseCasesFactory) {}
 

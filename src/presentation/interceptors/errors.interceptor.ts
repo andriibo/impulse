@@ -4,10 +4,11 @@ import {
     ExecutionContext,
     BadRequestException,
     NestInterceptor,
-    UnauthorizedException, ForbiddenException, NotFoundException
+    UnauthorizedException, ForbiddenException, NotFoundException, UnprocessableEntityException
 } from '@nestjs/common';
 import {BadRequestError, ForbiddenError, NotFoundError, UnauthorizedError} from 'application/errors';
 import {catchError, Observable, throwError} from 'rxjs';
+import {TypeORMError} from "typeorm";
 
 @Injectable()
 export class ErrorsInterceptor implements NestInterceptor {
@@ -25,6 +26,9 @@ export class ErrorsInterceptor implements NestInterceptor {
                 }
                 if (err instanceof NotFoundError) {
                     return throwError(() => new NotFoundException(err.message));
+                }
+                if (err instanceof TypeORMError) {
+                    return throwError(() => new UnprocessableEntityException(err.message));
                 }
 
                 return throwError(() => err);
