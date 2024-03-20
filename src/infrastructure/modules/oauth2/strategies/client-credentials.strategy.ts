@@ -2,8 +2,6 @@ import { OAuth2GrantStrategy } from 'infrastructure/modules/oauth2/decorators';
 import { AbstractStrategy } from 'infrastructure/modules/oauth2/strategies/abstract.strategy';
 import { OAuth2HttpRequestDto } from 'src/domain/dto/requests/oauth2';
 import { OAuth2HttpResponseDto } from 'src/domain/dto/responses/oauth2';
-import {ScopeModel} from "infrastructure/modules/oauth2/models";
-import {ScopeEnum} from "domain/enums/oauth2";
 
 @OAuth2GrantStrategy('client_credentials')
 export class ClientCredentialsStrategy extends AbstractStrategy {

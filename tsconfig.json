@@ -23,6 +23,9 @@
       "domain/*": ["src/domain/*"],
       "infrastructure/*": ["src/infrastructure/*"],
       "presentation/*": ["src/presentation/*"],
+      "root/*": ["*"],
+      "src/*": ["src/*"],
+      "tests/*": ["test/*"]
     }
   }
 }

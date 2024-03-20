@@ -8,8 +8,6 @@ export interface IAccessTokenRepository {
 
   create(accessToken: AccessTokenEntity): Promise<AccessTokenEntity>;
 
-  findValidTokensByUserId(userId: string): Promise<AccessTokenEntity[]>;
-
   delete(id: string): Promise<DeleteResult>;
 
   getExpiredTokens(): Promise<AccessTokenEntity[]>;

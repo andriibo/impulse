@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, IsNull, LessThan, MoreThan, Not, Repository } from 'typeorm';
+import { In, IsNull, LessThan, Not, Repository } from 'typeorm';
 import { AccessTokenModel } from 'infrastructure/modules/oauth2/models';
 import { IAccessTokenRepository } from 'domain/repositories';
 import { AccessTokenEntity } from 'domain/entities';
@@ -20,14 +20,6 @@ export class AccessTokenRepository implements IAccessTokenRepository {
 
   async create(accessToken: AccessTokenModel): Promise<AccessTokenEntity> {
     return await this.repository.save(accessToken);
-  }
-
-  async findValidTokensByUserId(userId: string): Promise<AccessTokenEntity[]> {
-    return await this.repository.findBy({
-      userId,
-      revoked: false,
-      expiresAt: MoreThan(new Date(Date.now())),
-    });
   }
 
   async delete(id: string): Promise<DeleteResult> {
