@@ -9,10 +9,10 @@ import {ConsoleModule} from "infrastructure/modules/console/console.module";
 import {AssignUserMiddleware} from "presentation/middlewares";
 import {RequestUserService} from "infrastructure/services";
 import {UserModule} from "infrastructure/modules/user/user.module";
-import {APP_GUARD, APP_INTERCEPTOR} from "@nestjs/core";
+import {APP_FILTER, APP_GUARD} from "@nestjs/core";
 import {ThrottlerBehindProxyGuard} from "presentation/guards";
 import {ThrottlerModule} from "@nestjs/throttler";
-import {ErrorsInterceptor} from "presentation/interceptors";
+import {ErrorsFilter} from "src/presentation/filters";
 
 @Module({
     imports: [
@@ -37,8 +37,8 @@ import {ErrorsInterceptor} from "presentation/interceptors";
             useClass: ThrottlerBehindProxyGuard,
         },
         {
-            provide: APP_INTERCEPTOR,
-            useClass: ErrorsInterceptor,
+            provide: APP_FILTER,
+            useClass: ErrorsFilter,
         },
     ],
 })

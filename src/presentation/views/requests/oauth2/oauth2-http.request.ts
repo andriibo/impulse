@@ -2,7 +2,8 @@ import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
   IsIn,
-  IsNotEmpty, IsUUID,
+  IsNotEmpty,
+  IsUUID,
   Length,
   MaxLength,
   ValidateIf,
@@ -41,7 +42,7 @@ export class OAuth2HttpRequest extends OAuth2HttpRequestDto {
   @ApiProperty({
     required: false,
     description:
-      'The refresh token only when grant_type is set to "refresh_token"',
+      'The refresh token only when grantType is set to "refresh_token"',
   })
   refreshToken?: string;
 
@@ -49,7 +50,7 @@ export class OAuth2HttpRequest extends OAuth2HttpRequestDto {
   @ApiProperty({
     required: false,
     maxLength: 100,
-    description: 'The username only when grant_type is set to "password"',
+    description: 'The username only when grantType is set to "password"',
   })
   @Transform(({ value }: TransformFnParams) => value?.trim())
   @IsEmail()
@@ -61,7 +62,7 @@ export class OAuth2HttpRequest extends OAuth2HttpRequestDto {
     required: false,
     minLength: 8,
     maxLength: 16,
-    description: 'The password when grant_type is set to "password"',
+    description: 'The password when grantType is set to "password"',
   })
   @Length(8, 16)
   password?: string;
