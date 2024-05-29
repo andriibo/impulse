@@ -6,7 +6,7 @@ import {UserResponseDto} from "domain/dto/responses/user";
 import {UserNotFoundError} from "application/modules/user/errors/user-not-found.error";
 
 @QueryHandler(GetUserInfoQuery)
-export class GeUserInfoHandler implements IQueryHandler<GetUserInfoQuery> {
+export class GetUserInfoHandler implements IQueryHandler<GetUserInfoQuery> {
   constructor(
     @Inject(IUserRepository)
     private readonly userRepository: IUserRepository,

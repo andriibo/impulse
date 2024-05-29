@@ -13,7 +13,7 @@ import {UserService} from "infrastructure/modules/user/services";
 import {UserController} from "presentation/controllers";
 import {UserUseCasesFactory} from "infrastructure/modules/user/factories";
 import {UserSpecification} from "application/modules/user/specifications";
-import {GeUserInfoHandler} from "application/modules/user/handlers/get-user-info.handler";
+import {GetUserInfoHandler} from "application/modules/user/handlers";
 
 @Module({
     imports: [
@@ -37,7 +37,7 @@ import {GeUserInfoHandler} from "application/modules/user/handlers/get-user-info
         UserSpecification,
         SignUpHandler,
         UserCreatedHandler,
-        GeUserInfoHandler,
+        GetUserInfoHandler,
     ],
 })
 export class UserModule {
