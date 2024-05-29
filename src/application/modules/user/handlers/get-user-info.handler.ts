@@ -12,8 +12,8 @@ export class GetUserInfoHandler implements IQueryHandler<GetUserInfoQuery> {
     private readonly userRepository: IUserRepository,
   ) {}
 
-  async execute(command: GetUserInfoQuery): Promise<UserResponseDto> {
-    const { userId } = command;
+  async execute(query: GetUserInfoQuery): Promise<UserResponseDto> {
+    const { userId } = query;
 
     const user = await this.userRepository.findById(userId);
     if (!user) {
